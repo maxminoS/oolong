@@ -13,6 +13,9 @@ help() {
     echo '  -d, --duration <source>'
     echo '          Rename file to have duration'
     echo ''
+    echo '  -a, --audio <source>'
+    echo '          Extract audio from video'
+    echo ''
     echo '  -m, --mute <source>'
     echo '          Mute video'
     echo ''
@@ -73,6 +76,11 @@ case "$1" in
         else
             echo "'$2' is not a file"
         fi
+        ;;
+    -a|--audio)
+        # Audio
+        # ool --audio <input>
+        ffmpeg -i "$2" -vn -ab 256 "${2%.*}.mp3"
         ;;
     -m|--mute)
         # Mute

@@ -25,6 +25,11 @@ into:
 
 `Harry Potter and the Sorcerer's Stone (Audiobook) [08.18.02].mp3`
 
+## Audio
+`ool -a <source>`
+
+Extract audio from a video file.
+
 ## Mute
 `ool -m <source>`
 

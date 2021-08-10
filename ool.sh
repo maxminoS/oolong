@@ -65,6 +65,11 @@ case "$1" in
             echo "'$2' is not a file"
         fi
         ;;
+    -c|--compress)
+        # Compress
+        # ool --compress <input>
+        ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
+        ;;
     *)
         echo "oolong: unrecognized option '$1'"
         help

@@ -24,3 +24,8 @@ Rename source file to include their lengths (in hh.mm.ss).
 into:
 
 `Harry Potter and the Sorcerer's Stone (Audiobook) [08.18.02].mp3`
+
+## Compress
+`ool -c <source>`
+
+Compress video file to a H.265/AAC `.mp4` encoding.

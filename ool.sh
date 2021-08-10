@@ -97,7 +97,6 @@ case "$1" in
         if [ -f "$2" ]; then
             duration="$(get_duration $2)"
             mv "$2" "${2%.*} [$duration].${2##*.}"
-            touch -r "$2" "${2%.*} [$duration].${2##*.}"
             echo "Duration [$2]: $duration"
         else
             echo "'$2' is not a file"

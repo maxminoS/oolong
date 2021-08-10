@@ -1,5 +1,22 @@
 #!/bin/sh
 
+help() {
+    echo "Syntax: ool [option] [...]"
+    echo ''
+    echo 'options:'
+    echo '  -h, --help'
+    echo '          Print this help message and exit'
+    echo ''
+    echo '  -t, --trim <start> <stop> <source>'
+    echo '          Trim file with the appropriate timestamps'
+    echo ''
+    echo '  -d, --duration <source>'
+    echo '          Rename file to have duration'
+    echo ''
+    echo '  -c, --compress <source>'
+    echo '          Compress video'
+}
+
 # Duration (HH:mm:ss)
 get_duration()
 {
@@ -11,6 +28,10 @@ get_duration()
 }
 
 case "$1" in
+    -h|--help)
+        help
+        exit 0
+        ;;
     -d|--duration)
         # Duration
         # ool --duration <input>

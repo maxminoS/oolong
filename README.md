@@ -29,3 +29,8 @@ into:
 `ool -c <source>`
 
 Compress video file to a H.265/AAC `.mp4` encoding.
+
+## Gif
+`ool -g <source>`
+
+Convert video file to a GIF file.

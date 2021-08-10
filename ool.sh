@@ -15,6 +15,9 @@ help() {
     echo ''
     echo '  -c, --compress <source>'
     echo '          Compress video'
+    echo ''
+    echo '  -g, --gif <source>'
+    echo '          Convert video to GIF'
 }
 
 # Duration (HH:mm:ss)
@@ -69,6 +72,11 @@ case "$1" in
         # Compress
         # ool --compress <input>
         ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
+        ;;
+    -g|--gif)
+        # Gif
+        # ool --gif <input>
+        ffmpeg -i "$2" -vf scale=500:-1 -t 10 -r 10 "${2%.*}.gif"
         ;;
     *)
         echo "oolong: unrecognized option '$1'"

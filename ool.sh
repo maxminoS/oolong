@@ -13,6 +13,9 @@ help() {
     echo '  -d, --duration <source>'
     echo '          Rename file to have duration'
     echo ''
+    echo '  -m, --mute <source>'
+    echo '          Mute video'
+    echo ''
     echo '  -c, --compress <source>'
     echo '          Compress video'
     echo ''
@@ -70,6 +73,11 @@ case "$1" in
         else
             echo "'$2' is not a file"
         fi
+        ;;
+    -m|--mute)
+        # Mute
+        # ool --mute <input>
+        ffmpeg -i "$2" -an "${2%.*}-mute.${2##*.}"
         ;;
     -c|--compress)
         # Compress

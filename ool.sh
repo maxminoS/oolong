@@ -17,7 +17,7 @@ help() {
     echo '          Compress video'
     echo ''
     echo 'audio options:'
-    echo '  -a, --audio <source>'
+    echo '  -x, --extract-audio <source>'
     echo '          Extract audio from video'
     echo ''
     echo '  -m, --mute <source>'
@@ -85,7 +85,7 @@ case "$1" in
         ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
         touch -r "$2" "${2%.*}-min.mp4"
         ;;
-    -a|--audio)
+    -x|--extract-audio)
         ffmpeg -i "$2" -vn -ab 256 "${2%.*}.mp3"
         touch -r "$2" "${2%.*}.mp3"
         ;;

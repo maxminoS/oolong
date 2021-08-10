@@ -26,7 +26,7 @@ Compress video file to a H.265/AAC `.mp4` encoding.
 
 ## Audio
 ### Extract Audio
-`ool -a <source>`
+`ool -x <source>`
 
 Extract audio from a video file.
 

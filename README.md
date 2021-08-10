@@ -41,6 +41,25 @@ Mute audio in a video file.
 
 Print help message.
 
+### All
+Executes following `ool` command to all files in directory.
+Works only with trim, subtitle, compress, extract audio, mute, duration, and GIF.
+
+#### Usage
+Trim: `ool -at <start> <stop>`
+
+Subtitle: `ool -as <subtitle>`
+
+Compress: `ool -ac`
+
+Extract audio: `ool -ax`
+
+Mute: `ool -am`
+
+Duration: `ool -ad`
+
+GIF `ool -ag`
+
 ### Duration
 `ool -d <source>`
 
@@ -53,7 +72,7 @@ into:
 
 `Harry Potter and the Sorcerer's Stone (Audiobook) [08.18.02].mp3`
 
-### Gif
+### GIF
 `ool -g <source>`
 
 Convert video file to a GIF file.

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 help() {
-    echo "Syntax: ool [option] [...]"
+    echo "Syntax: ool [--all] [option] [...]"
     echo ''
     echo 'video options:'
     echo '  -j, --join <source> <source>'
@@ -26,6 +26,9 @@ help() {
     echo 'tool options:'
     echo '  -h, --help'
     echo '          Print this help message and exit'
+    echo ''
+    echo '  -a, --all'
+    echo '          Apply following ool command to all files in directory'
     echo ''
     echo '  -d, --duration <source>'
     echo '          Rename file to have duration'
@@ -65,6 +68,18 @@ case "$1" in
     -h|--help)
         help
         exit 0
+        ;;
+    --all)
+        shift
+        for i in *; do ool "$@" "$i"; done
+        ;;
+    -at|-as)
+        flag="-$(echo $1 | tail -c 2)"
+        shift
+        for i in *; do ool "$flag" "$@" "$i"; done
+        ;;
+    -ac|-ax|-am|-ad|-ag)
+        for i in *; do ool "-$(echo $1 | tail -c 2)" "$i"; done
         ;;
     -j|--join)
         tmp_file="${TMPDIR:-/tmp/}ool.$(awk 'BEGIN {srand();printf "%d\n", rand() * 10^10}')"

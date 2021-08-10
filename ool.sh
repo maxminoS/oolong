@@ -7,6 +7,9 @@ help() {
     echo '  -h, --help'
     echo '          Print this help message and exit'
     echo ''
+    echo '  -j, --join <source> <source>'
+    echo '          Join two video files together'
+    echo ''
     echo '  -t, --trim <start> <stop> <source>'
     echo '          Trim file with the appropriate timestamps'
     echo ''
@@ -60,6 +63,11 @@ case "$1" in
     -h|--help)
         help
         exit 0
+        ;;
+    -j|--join)
+        # Join
+        # ool --join <input> <input>
+        ffmpeg -f concat -safe 0 -i <(echo "file '$PWD/$2'\nfile '$PWD/$3'" | cat) -c copy "${2%.*}-ext.${2##*.}"
         ;;
     -t|--trim)
         # Trim

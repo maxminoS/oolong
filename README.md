@@ -3,6 +3,11 @@ Requirement: `ffmpeg`
 
 A shell script to deal with simple media file editing.
 
+## Join
+`ool -j <source> <source>`
+
+Join two video files together.
+
 ## Trim
 `ool -t <start> <stop> <source>`
 

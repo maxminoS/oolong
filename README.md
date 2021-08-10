@@ -30,6 +30,11 @@ into:
 
 Compress video file to a H.265/AAC `.mp4` encoding.
 
+## Subtitle
+`ool -s <subtitle> <source>`
+
+Add subtitle to video file.
+
 ## Gif
 `ool -g <source>`
 

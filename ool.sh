@@ -16,6 +16,9 @@ help() {
     echo '  -c, --compress <source>'
     echo '          Compress video'
     echo ''
+    echo '  -s, --subtitle <subtitle> <source>'
+    echo '          Add subtitle to video'
+    echo ''
     echo '  -g, --gif <source>'
     echo '          Convert video to GIF'
 }
@@ -72,6 +75,11 @@ case "$1" in
         # Compress
         # ool --compress <input>
         ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
+        ;;
+    -s|--subtitle)
+        # Subtitle
+        # ool --subtitle <subtitle> <input>
+        ffmpeg -i "$3" -i "$2" -c copy -c:s mov_text "${3%.*}-subbed.${3##*.}"
         ;;
     -g|--gif)
         # Gif

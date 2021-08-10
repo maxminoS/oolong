@@ -69,7 +69,10 @@ case "$1" in
     -j|--join)
         # Join
         # ool --join <input> <input>
-        ffmpeg -f concat -safe 0 -i <(echo "file '$PWD/$2'\nfile '$PWD/$3'" | cat) -c copy "${2%.*}-ext.${2##*.}"
+        tmp_file="${TMPDIR:-/tmp/}ool.$(awk 'BEGIN {srand();printf "%d\n", rand() * 10^10}')"
+        echo "file '$PWD/$2'\nfile '$PWD/$3'" > tmp_file
+        ffmpeg -f concat -safe 0 -i tmp_file -c copy "${2%.*}-ext.${2##*.}"
+        rm tmp_file
         ;;
     -t|--trim)
         # Trim

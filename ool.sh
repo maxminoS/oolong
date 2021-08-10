@@ -73,31 +73,37 @@ case "$1" in
         echo "file '$PWD/$2'\nfile '$PWD/$3'" > tmp_file
         ffmpeg -f concat -safe 0 -i tmp_file -c copy "${2%.*}-ext.${2##*.}"
         rm tmp_file
+        touch -r "$2" "${2%.*}-ext.${2##*.}"
         ;;
     -t|--trim)
         # Trim
         # ool --trim <first_timestamp> <second_timestamp> <input>
         ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff $2 $3)" "${4%.*}-trimmed.${4##*.}"
+        touch -r "$4" "${4%.*}-trimmed.${4##*.}"
         ;;
     -s|--subtitle)
         # Subtitle
         # ool --subtitle <subtitle> <input>
         ffmpeg -i "$3" -i "$2" -c copy -c:s mov_text "${3%.*}-subbed.${3##*.}"
+        touch -r "$3" "${3%.*}-subbed.${3##*.}"
         ;;
     -c|--compress)
         # Compress
         # ool --compress <input>
         ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
+        touch -r "$2" "${2%.*}-min.mp4"
         ;;
     -a|--audio)
         # Audio
         # ool --audio <input>
         ffmpeg -i "$2" -vn -ab 256 "${2%.*}.mp3"
+        touch -r "$2" "${2%.*}.mp3"
         ;;
     -m|--mute)
         # Mute
         # ool --mute <input>
         ffmpeg -i "$2" -an "${2%.*}-mute.${2##*.}"
+        touch -r "$2" "${2%.*}-mute.${2##*.}"
         ;;
     -d|--duration)
         # Duration
@@ -105,6 +111,7 @@ case "$1" in
         if [ -f "$2" ]; then
             duration="$(get_duration $2)"
             mv "$2" "${2%.*} [$duration].${2##*.}"
+            touch -r "$2" "${2%.*} [$duration].${2##*.}"
             echo "Duration [$2]: $duration"
         else
             echo "'$2' is not a file"

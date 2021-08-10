@@ -27,10 +27,32 @@ get_duration()
     echo "$FIXED_HOUR.$FIXED_MINUTE.$FIXED_SECOND"
 }
 
+# Time (HH:mm:ss) in seconds
+get_sec()
+{
+    HOUR=$(echo $1 | cut -d: -f1)
+    MINUTE=$(echo $1 | cut -d: -f2)
+    SECOND=$(echo $1 | cut -d: -f3)
+    echo $(((HOUR*60*60)+(MINUTE*60)+SECOND))
+}
+
+# Time difference in (HH:mm:ss)
+get_diff()
+{
+    DIFF=$(($(get_sec $2)-$(get_sec $1)))
+    [ $DIFF -lt 0 ] && DIFF=$((-DIFF))
+    echo "$((DIFF/3600)):$((DIFF/60%60)):$((DIFF%60))"
+}
+
 case "$1" in
     -h|--help)
         help
         exit 0
+        ;;
+    -t|--trim)
+        # Trim
+        # ool --trim <first_timestamp> <second_timestamp> <input>
+        ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff $2 $3)" "${4%.*}-trimmed.${4##*.}"
         ;;
     -d|--duration)
         # Duration

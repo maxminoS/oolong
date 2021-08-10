@@ -3,6 +3,16 @@ Requirement: `ffmpeg`
 
 A shell script to deal with simple media file editing.
 
+## Trim
+`ool -t <start> <stop> <source>`
+
+Rename source file to include their lengths (in hh.mm.ss).
+
+### Example
+`ool -t 0:02:12 0:21:24 movie.mkv`
+
+Outputs a trimmed `movie.mkv` from `2:12`-`21:24`
+
 ## Duration
 `ool -d <source>`
 

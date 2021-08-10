@@ -37,28 +37,28 @@ help() {
 # Duration (HH:mm:ss)
 get_duration()
 {
-    DURATION=$(ffmpeg -i "$1" 2>&1 | grep Duration | awk '{print $2}' | cut -d. -f1 | tr : .)
-    FIXED_HOUR=$(echo "$DURATION" | cut -d. -f1 | tail -c 3)
-    FIXED_MINUTE=$(echo "$DURATION" | cut -d. -f2)
-    FIXED_SECOND=$(echo "$DURATION" | cut -d. -f3)
-    echo "$FIXED_HOUR.$FIXED_MINUTE.$FIXED_SECOND"
+    duration=$(ffmpeg -i "$1" 2>&1 | grep Duration | awk '{print $2}' | cut -d. -f1 | tr : .)
+    fixed_hour=$(echo "$duration" | cut -d. -f1 | tail -c 3)
+    fixed_minute=$(echo "$duration" | cut -d. -f2)
+    fixed_second=$(echo "$duration" | cut -d. -f3)
+    echo "$fixed_hour.$fixed_minute.$fixed_second"
 }
 
 # Time (HH:mm:ss) in seconds
 get_sec()
 {
-    HOUR=$(echo $1 | cut -d: -f1)
-    MINUTE=$(echo $1 | cut -d: -f2)
-    SECOND=$(echo $1 | cut -d: -f3)
-    echo $(((HOUR*60*60)+(MINUTE*60)+SECOND))
+    hour=$(echo $1 | cut -d: -f1)
+    minute=$(echo $1 | cut -d: -f2)
+    second=$(echo $1 | cut -d: -f3)
+    echo $(((hour*60*60)+(minute*60)+second))
 }
 
 # Time difference in (HH:mm:ss)
 get_diff()
 {
-    DIFF=$(($(get_sec $2)-$(get_sec $1)))
-    [ $DIFF -lt 0 ] && DIFF=$((-DIFF))
-    echo "$((DIFF/3600)):$((DIFF/60%60)):$((DIFF%60))"
+    diff=$(($(get_sec $2)-$(get_sec $1)))
+    [ $diff -lt 0 ] && diff=$((-diff))
+    echo "$((diff/3600)):$((diff/60%60)):$((diff%60))"
 }
 
 case "$1" in
@@ -103,9 +103,9 @@ case "$1" in
         # Duration
         # ool --duration <input>
         if [ -f "$2" ]; then
-            DURATION="$(get_duration $2)"
-            mv "$2" "${2%.*} [$DURATION].${2##*.}"
-            echo "Duration [$2]: $DURATION"
+            duration="$(get_duration $2)"
+            mv "$2" "${2%.*} [$duration].${2##*.}"
+            echo "Duration [$2]: $duration"
         else
             echo "'$2' is not a file"
         fi

@@ -3,30 +3,32 @@
 help() {
     echo "Syntax: ool [option] [...]"
     echo ''
-    echo 'options:'
-    echo '  -h, --help'
-    echo '          Print this help message and exit'
-    echo ''
+    echo 'video options:'
     echo '  -j, --join <source> <source>'
     echo '          Join two video files together'
     echo ''
     echo '  -t, --trim <start> <stop> <source>'
     echo '          Trim file with the appropriate timestamps'
     echo ''
-    echo '  -d, --duration <source>'
-    echo '          Rename file to have duration'
+    echo '  -s, --subtitle <subtitle> <source>'
+    echo '          Add subtitle to video'
     echo ''
+    echo '  -c, --compress <source>'
+    echo '          Compress video'
+    echo ''
+    echo 'audio options:'
     echo '  -a, --audio <source>'
     echo '          Extract audio from video'
     echo ''
     echo '  -m, --mute <source>'
     echo '          Mute video'
     echo ''
-    echo '  -c, --compress <source>'
-    echo '          Compress video'
+    echo 'tool options:'
+    echo '  -h, --help'
+    echo '          Print this help message and exit'
     echo ''
-    echo '  -s, --subtitle <subtitle> <source>'
-    echo '          Add subtitle to video'
+    echo '  -d, --duration <source>'
+    echo '          Rename file to have duration'
     echo ''
     echo '  -g, --gif <source>'
     echo '          Convert video to GIF'
@@ -74,16 +76,15 @@ case "$1" in
         # ool --trim <first_timestamp> <second_timestamp> <input>
         ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff $2 $3)" "${4%.*}-trimmed.${4##*.}"
         ;;
-    -d|--duration)
-        # Duration
-        # ool --duration <input>
-        if [ -f "$2" ]; then
-            DURATION="$(get_duration $2)"
-            mv "$2" "${2%.*} [$DURATION].${2##*.}"
-            echo "Duration [$2]: $DURATION"
-        else
-            echo "'$2' is not a file"
-        fi
+    -s|--subtitle)
+        # Subtitle
+        # ool --subtitle <subtitle> <input>
+        ffmpeg -i "$3" -i "$2" -c copy -c:s mov_text "${3%.*}-subbed.${3##*.}"
+        ;;
+    -c|--compress)
+        # Compress
+        # ool --compress <input>
+        ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
         ;;
     -a|--audio)
         # Audio
@@ -95,15 +96,16 @@ case "$1" in
         # ool --mute <input>
         ffmpeg -i "$2" -an "${2%.*}-mute.${2##*.}"
         ;;
-    -c|--compress)
-        # Compress
-        # ool --compress <input>
-        ffmpeg -i "$2" -c:v libx265 -crf 28 -c:a aac -b:a 128k -tag:v hvc1 "${2%.*}-min.mp4"
-        ;;
-    -s|--subtitle)
-        # Subtitle
-        # ool --subtitle <subtitle> <input>
-        ffmpeg -i "$3" -i "$2" -c copy -c:s mov_text "${3%.*}-subbed.${3##*.}"
+    -d|--duration)
+        # Duration
+        # ool --duration <input>
+        if [ -f "$2" ]; then
+            DURATION="$(get_duration $2)"
+            mv "$2" "${2%.*} [$DURATION].${2##*.}"
+            echo "Duration [$2]: $DURATION"
+        else
+            echo "'$2' is not a file"
+        fi
         ;;
     -g|--gif)
         # Gif

@@ -35,6 +35,11 @@ Extract audio from a video file.
 
 Mute audio in a video file.
 
+### mp3
+`ool -3 <source>`
+
+Convert audio file into `mp3`.
+
 ## Tool
 ### Help
 `ool -h`

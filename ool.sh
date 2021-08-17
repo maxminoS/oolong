@@ -23,6 +23,9 @@ help() {
     echo '  -m, --mute <source>'
     echo '          Mute video'
     echo ''
+    echo '  -3, --mp3 <source>'
+    echo '          Convert audio to mp3'
+    echo ''
     echo 'tool options:'
     echo '  -h, --help'
     echo '          Print this help message and exit'
@@ -78,7 +81,7 @@ case "$1" in
         shift
         for i in *; do ool "$flag" "$@" "$i"; done
         ;;
-    -ac|-ax|-am|-ad|-ag)
+    -ac|-ax|-a3|-am|-ad|-ag)
         for i in *; do ool "-$(echo $1 | tail -c 2)" "$i"; done
         ;;
     -j|--join)
@@ -102,6 +105,10 @@ case "$1" in
         ;;
     -x|--extract-audio)
         ffmpeg -i "$2" -vn -ab 256 "${2%.*}.mp3"
+        touch -r "$2" "${2%.*}.mp3"
+        ;;
+    -3|--mp3)
+        ffmpeg -i "$2" -vn -ar 44100 -ac 2 -b:a 192k "${2%.*}.mp3"
         touch -r "$2" "${2%.*}.mp3"
         ;;
     -m|--mute)

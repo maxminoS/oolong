@@ -53,16 +53,18 @@ get_duration()
 # Time (HH:mm:ss) in seconds
 get_sec()
 {
-    hour=$(echo $1 | cut -d: -f1)
-    minute=$(echo $1 | cut -d: -f2)
-    second=$(echo $1 | cut -d: -f3)
+    hour=$(echo "$1" | cut -d: -f1)
+    minute=$(echo "$1" | cut -d: -f2)
+    second=$(echo "$1" | cut -d: -f3)
     echo $(((hour*60*60)+(minute*60)+second))
 }
 
 # Time difference in (HH:mm:ss)
 get_diff()
 {
-    diff=$(($(get_sec $2)-$(get_sec $1)))
+    sec1="$(get_sec "$1")"
+    sec2="$(get_sec "$2")"
+    diff=$((sec2 - sec1))
     [ $diff -lt 0 ] && diff=$((-diff))
     echo "$((diff/3600)):$((diff/60%60)):$((diff%60))"
 }
@@ -77,22 +79,22 @@ case "$1" in
         for i in *; do ool "$@" "$i"; done
         ;;
     -at|-as)
-        flag="-$(echo $1 | tail -c 2)"
+        flag="-$(echo "$1" | tail -c 2)"
         shift
         for i in *; do ool "$flag" "$@" "$i"; done
         ;;
     -ac|-ax|-a3|-am|-ad|-ag)
-        for i in *; do ool "-$(echo $1 | tail -c 2)" "$i"; done
+        for i in *; do ool "-$(echo "$1" | tail -c 2)" "$i"; done
         ;;
     -j|--join)
         tmp_file="${TMPDIR:-/tmp/}ool.$(awk 'BEGIN {srand();printf "%d\n", rand() * 10^10}')"
-        echo "file '$PWD/$2'\nfile '$PWD/$3'" > tmp_file
+        echo "file '$PWD/$2'\nfile '$PWD/$3'" > "$tmp_file"
         ffmpeg -f concat -safe 0 -i tmp_file -c copy "${2%.*}-ext.${2##*.}"
-        rm tmp_file
+        rm "$tmp_file"
         touch -r "$2" "${2%.*}-ext.${2##*.}"
         ;;
     -t|--trim)
-        ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff $2 $3)" "${4%.*}-trimmed.${4##*.}"
+        ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff "$2" "$3")" "${4%.*}-trimmed.${4##*.}"
         touch -r "$4" "${4%.*}-trimmed.${4##*.}"
         ;;
     -s|--subtitle)
@@ -117,7 +119,7 @@ case "$1" in
         ;;
     -d|--duration)
         if [ -f "$2" ]; then
-            duration="$(get_duration $2)"
+            duration="$(get_duration "$2")"
             mv "$2" "${2%.*} [$duration].${2##*.}"
             echo "Duration [$2]: $duration"
         else

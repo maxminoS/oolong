@@ -50,25 +50,6 @@ get_duration()
     echo "$fixed_hour.$fixed_minute.$fixed_second"
 }
 
-# Time (HH:mm:ss) in seconds
-get_sec()
-{
-    hour=$(echo "$1" | cut -d: -f1)
-    minute=$(echo "$1" | cut -d: -f2)
-    second=$(echo "$1" | cut -d: -f3)
-    echo $(((hour*60*60)+(minute*60)+second))
-}
-
-# Time difference in (HH:mm:ss)
-get_diff()
-{
-    sec1="$(get_sec "$1")"
-    sec2="$(get_sec "$2")"
-    diff=$((sec2 - sec1))
-    [ $diff -lt 0 ] && diff=$((-diff))
-    echo "$((diff/3600)):$((diff/60%60)):$((diff%60))"
-}
-
 case "$1" in
     -h|--help)
         help
@@ -94,7 +75,7 @@ case "$1" in
         touch -r "$2" "${2%.*}-ext.${2##*.}"
         ;;
     -t|--trim)
-        ffmpeg -ss "$2" -i "$4" -codec copy -t "$(get_diff "$2" "$3")" "${4%.*}-trimmed.${4##*.}"
+        ffmpeg -ss "$2" -to "$3" -i "$4" -codec copy "${4%.*}-trimmed.${4##*.}"
         touch -r "$4" "${4%.*}-trimmed.${4##*.}"
         ;;
     -s|--subtitle)
